@@ -34,7 +34,8 @@ public final class TypeResolvers {
     /**
      * 所有注册的{@link TypeResolver}
      */
-    private static final SortedSet<TypeResolver<?, ? extends AnnotatedType>> TYPE_RESOLVERS = Collections.synchronizedSortedSet(new TreeSet<>());
+    private static final SortedSet<TypeResolver<?, ? extends AnnotatedType>> TYPE_RESOLVERS =
+            Collections.synchronizedSortedSet(new TreeSet<>());
 
     static {
         register(new TypeVariableResolver());
@@ -44,6 +45,7 @@ public final class TypeResolvers {
         register(new ArrayTypeResolver());
         register(new ObjectTypeResolver());
         register(new CascadeTypeResolver());
+        register(new MapFlatTypeResolver());
     }
 
     private TypeResolvers() {
@@ -83,8 +85,11 @@ public final class TypeResolvers {
      */
     @SuppressWarnings("unchecked")
     public static <T, AT extends AnnotatedType> T resolve(T value, AT annotatedType) {
-        return TYPE_RESOLVERS.stream().filter(typeResolver -> typeResolver.support(value, annotatedType))
-                .reduce(value, (u, r) -> ((TypeResolver<T, AT>) r).resolve(u, annotatedType), (u1, u2) -> null);
+        return TYPE_RESOLVERS.stream()
+                .filter(typeResolver -> typeResolver.support(value, annotatedType))
+                .reduce(value,
+                        (u, r) -> ((TypeResolver<T, AT>) r).resolve(u, annotatedType),
+                        (u1, u2) -> null);
     }
 
     /**
