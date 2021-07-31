@@ -20,6 +20,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import red.zyc.desensitization.annotation.ChineseNameSensitive;
 import red.zyc.desensitization.annotation.EmailSensitive;
+import red.zyc.desensitization.annotation.MapSensitive;
 import red.zyc.desensitization.model.Child;
 import red.zyc.desensitization.support.TypeToken;
 
@@ -83,9 +84,28 @@ public class DesensitizationTest {
                 })));
 
         // Map
-        System.out.printf("Map脱敏: %s%n", Sensitive.desensitize(Stream.of("张三", "李四", "小明").collect(Collectors.toMap(s -> s, s -> "123456@qq.com")),
-                new TypeToken<Map<@ChineseNameSensitive String, @EmailSensitive String>>() {
-                }));
+        System.out.printf("Map脱敏: %s%n",
+                Sensitive.desensitize(Stream.of("张三", "李四", "小明")
+                                .collect(Collectors.toMap(s -> s, s -> "123456@qq.com")),
+                        new TypeToken<Map<@ChineseNameSensitive String, @EmailSensitive String>>() {
+                        }));
+
+        Assert.assertTrue(true);
+    }
+
+    @Test
+    public void desensitizeMapFlatTest() {
+        desensitizeMapFlat();
+    }
+
+    private static void desensitizeMapFlat() {
+
+        // Map
+        System.out.printf("Map脱敏: %s%n",
+                Sensitive.desensitize(Stream.of("phoneNo", "userName", "email")
+                                .collect(Collectors.toMap(s -> s, s -> "123456@qq.com")),
+                        new TypeToken<@MapSensitive Map<String, String>>() {
+                        }));
 
         Assert.assertTrue(true);
     }
