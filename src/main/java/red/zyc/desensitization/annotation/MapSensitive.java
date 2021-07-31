@@ -37,8 +37,7 @@ import java.lang.annotation.Target;
 public @interface MapSensitive {
 
     /**
-     * @return 加密元素配置, 以Json格式传递
-     * @jsonschema {[{elementName, startOffset, endOffset, placeholder}]}
+     * @return phoneNo:3,4,*;email:2,3,*
      */
     String config() default "phoneNo:3,4,*;email:2,3,*";
 
