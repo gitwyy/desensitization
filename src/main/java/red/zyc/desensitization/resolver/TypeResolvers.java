@@ -45,7 +45,6 @@ public final class TypeResolvers {
         register(new ArrayTypeResolver());
         register(new ObjectTypeResolver());
         register(new CascadeTypeResolver());
-        register(new MapFlatTypeResolver());
     }
 
     private TypeResolvers() {

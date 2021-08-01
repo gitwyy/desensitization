@@ -74,8 +74,11 @@ public class ObjectTypeResolver implements TypeResolver<Object, AnnotatedType> {
      */
     private Desensitizer<Object, Annotation> getDesensitizer(Annotation annotation) {
         try {
-            Method desensitizerMethod = DESENSITIZER_METHOD_CACHE.computeIfAbsent(annotation.annotationType(), annotationClass -> ReflectionUtil.getDeclaredMethod(annotationClass, "desensitizer"));
-            return DESENSITIZER_CACHE.computeIfAbsent(ReflectionUtil.invokeMethod(annotation, desensitizerMethod), clazz -> InstanceCreators.getInstanceCreator(clazz).create());
+            Method desensitizerMethod = DESENSITIZER_METHOD_CACHE.computeIfAbsent(annotation.annotationType(),
+                    annotationClass -> ReflectionUtil.getDeclaredMethod(annotationClass, "desensitizer"));
+            return DESENSITIZER_CACHE.computeIfAbsent(
+                    ReflectionUtil.invokeMethod(annotation, desensitizerMethod),
+                    clazz -> InstanceCreators.getInstanceCreator(clazz).create());
         } catch (Exception e) {
             throw new DesensitizationException(String.format("实例化敏感注解%s的脱敏器失败。", annotation.annotationType()), e);
         }

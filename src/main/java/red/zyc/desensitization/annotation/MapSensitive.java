@@ -17,6 +17,8 @@
 package red.zyc.desensitization.annotation;
 
 import red.zyc.desensitization.desensitizer.Condition;
+import red.zyc.desensitization.desensitizer.Desensitizer;
+import red.zyc.desensitization.desensitizer.MapDesensitizer;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -34,7 +36,14 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.TYPE_USE, ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@SensitiveAnnotation
 public @interface MapSensitive {
+
+    /**
+     * @return 处理被 {@link MapSensitive}标记的对象脱敏器，注意密码字段类型可能为任意类型，
+     * 所以此处的脱敏器支持的类型并没有作限制，可以自定义子类重写默认的处理逻辑。
+     */
+    Class<? extends Desensitizer<?, MapSensitive>> desensitizer() default MapDesensitizer.class;
 
     /**
      * @return phoneNo:3,4,*;email:2,3,*

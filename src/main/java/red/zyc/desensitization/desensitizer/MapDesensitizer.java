@@ -43,6 +43,7 @@ public class MapDesensitizer implements Desensitizer<Map<String, Object>, MapSen
         Set<String> confKeys = conf.keySet();
         Map<String, Object> result = InstanceCreators.getInstanceCreator(ReflectionUtil.getClass(target)).create();
         result.putAll(target);
+
         confKeys.retainAll(targetKeys);
         confKeys.parallelStream().forEach(k -> {
             String v = result.get(k).toString();
